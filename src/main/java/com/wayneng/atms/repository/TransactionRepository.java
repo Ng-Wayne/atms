@@ -21,4 +21,6 @@ public interface TransactionRepository extends JpaRepository<Transaction, String
         AND t.transactionTime >= :startOfDay
     """)
     BigDecimal sumWithdrawalsToday(String accountNumber, LocalDateTime startOfDay);
+
+    Optional<Transaction> findTopBySession_SessionIdOrderByTransactionTimeDesc(String sessionId);
 }

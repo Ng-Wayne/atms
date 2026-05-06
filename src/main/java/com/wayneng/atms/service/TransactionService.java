@@ -17,4 +17,6 @@ public interface TransactionService {
     void updateTransactionStatus(String transactionId, String transactionStatus);
 
     Transaction getTransactionById(String transactionId);
+
+    Transaction getTransactionBySessionId(String sessionId);
 }

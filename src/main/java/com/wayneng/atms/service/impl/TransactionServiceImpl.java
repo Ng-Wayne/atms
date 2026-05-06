@@ -69,4 +69,11 @@ public class TransactionServiceImpl implements TransactionService {
         return transactionRepository.findByTransactionId(transactionId)
                 .orElseThrow(() -> new RuntimeException("Transaction not found"));
     }
+
+    @Override
+    public Transaction getTransactionBySessionId(String sessionId) {
+        return transactionRepository
+                .findTopBySession_SessionIdOrderByTransactionTimeDesc(sessionId)
+                .orElseThrow(() -> new RuntimeException("No transaction found for session: " + sessionId));
+    }
 }
