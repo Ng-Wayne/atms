@@ -12,7 +12,7 @@ import java.time.LocalDate;
 import static org.assertj.core.api.Assertions.*;
 
 @SpringBootTest
-class WithdrawalFlowTest {
+class FlowTest {
 
     @Autowired private AccountRepository accountRepository;
     @Autowired private CardRepository cardRepository;
@@ -88,75 +88,57 @@ class WithdrawalFlowTest {
         atmRepository.save(atm);
     }
 
-    // SUCCESS CASE
+    // SUCCESS CASE (ONE WITHDRAWAL)
     @Test
     void shouldWithdrawSuccessfully() {
 
-        // Start session
         Session session = sessionService.startSession(CARD_NUMBER, ATM_CODE);
-
-        // Authenticate
         sessionService.authenticateSession(session.getSessionId());
-
         BigDecimal withdrawAmount = new BigDecimal("200");
 
-        // Execute
         withdrawalService.withdraw(session, withdrawAmount);
 
-        // Verify transaction
         Transaction tx = transactionService.getTransactionBySessionId(session.getSessionId());
         assertThat(tx.getTransactionStatus()).isEqualTo("SUCCESS");
 
-        // Verify account balance
         Account updatedAccount = accountRepository.findById(ACCOUNT_NUMBER).orElseThrow();
         assertThat(updatedAccount.getAvailableBalance())
                 .isEqualByComparingTo("800");
 
-        // Verify ATM cash
         ATM updatedATM = atmRepository.findById(ATM_CODE).orElseThrow();
         assertThat(updatedATM.getCashAvailable())
                 .isEqualByComparingTo("9800");
 
-        // End session
         sessionService.endSession(session.getSessionId(), "COMPLETED");
 
         Session ended = sessionRepository.findById(session.getSessionId()).orElseThrow();
         assertThat(ended.getSessionStatus()).isEqualTo("ENDED");
     }
 
-    // FAILURE CASE
+    // FAILURE CASE - INSUFFICIENT BALANCE (ONE WITHDRAWAL)
     @Test
     void shouldFailWithdrawal_dueToInsufficientBalance() {
 
-        // Start session
         Session session = sessionService.startSession(CARD_NUMBER, ATM_CODE);
-
-        // Authenticate
         sessionService.authenticateSession(session.getSessionId());
+        BigDecimal withdrawAmount = new BigDecimal("2000");
 
-        BigDecimal withdrawAmount = new BigDecimal("2000"); // exceeds balance
-
-        // Execute
         assertThatThrownBy(() ->
                 withdrawalService.withdraw(session, withdrawAmount)
         ).isInstanceOf(RuntimeException.class)
                 .hasMessageContaining("Insufficient balance");
 
-        // Verify transaction FAILED
         Transaction tx = transactionService.getTransactionBySessionId(session.getSessionId());
         assertThat(tx.getTransactionStatus()).isEqualTo("FAILED");
 
-        // Verify account unchanged
         Account updatedAccount = accountRepository.findById(ACCOUNT_NUMBER).orElseThrow();
         assertThat(updatedAccount.getAvailableBalance())
                 .isEqualByComparingTo("1000");
 
-        // Verify ATM unchanged
         ATM updatedATM = atmRepository.findById(ATM_CODE).orElseThrow();
         assertThat(updatedATM.getCashAvailable())
                 .isEqualByComparingTo("10000");
 
-        // End session
         sessionService.endSession(session.getSessionId(), "FAILED");
 
         Session ended = sessionRepository.findById(session.getSessionId()).orElseThrow();
