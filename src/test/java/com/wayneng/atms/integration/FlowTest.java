@@ -96,8 +96,8 @@ class FlowTest {
 
         Session session = sessionService.startSession(CARD_NUMBER, ATM_CODE);
         sessionService.authenticateSession(session.getSessionId());
-        BigDecimal withdrawAmount = new BigDecimal("200");
 
+        BigDecimal withdrawAmount = new BigDecimal("200");
         withdrawalService.withdraw(session, withdrawAmount);
 
         Transaction tx = transactionService.getTransactionBySessionId(session.getSessionId());
@@ -122,8 +122,8 @@ class FlowTest {
     void shouldDepositSuccessfully() {
         Session session = sessionService.startSession(CARD_NUMBER, ATM_CODE);
         sessionService.authenticateSession(session.getSessionId());
-        BigDecimal depositAmount = new BigDecimal("500");
 
+        BigDecimal depositAmount = new BigDecimal("500");
         depositService.deposit(session, depositAmount);
 
         Transaction tx = transactionService.getTransactionBySessionId(session.getSessionId());
@@ -152,6 +152,51 @@ class FlowTest {
 
         BigDecimal balance = balanceInquiryService.inquire(session);
         assertThat(balance).isEqualByComparingTo("1000");
+
+        sessionService.endSession(session.getSessionId(), "COMPLETED");
+        Session ended = sessionRepository.findById(session.getSessionId()).orElseThrow();
+        assertThat(ended.getSessionStatus()).isEqualTo("ENDED");
+    }
+
+    // SUCCESS CASE (ONE DEPOSIT, ONE WITHDRAWAL, BALANCE INQUIRY)
+    @Test
+    void shouldDepositWithdrawInquireSuccessfully() {
+
+        Session session = sessionService.startSession(CARD_NUMBER, ATM_CODE);
+        sessionService.authenticateSession(session.getSessionId());
+
+        BigDecimal depositAmount = new BigDecimal("500");
+        depositService.deposit(session, depositAmount);
+
+        Transaction tx = transactionService.getTransactionBySessionId(session.getSessionId());
+        assertThat(tx.getTransactionType()).isEqualTo("DEPOSIT");
+        assertThat(tx.getTransactionStatus()).isEqualTo("SUCCESS");
+
+        Account updatedAccount = accountRepository.findById(ACCOUNT_NUMBER).orElseThrow();
+        assertThat(updatedAccount.getAvailableBalance())
+                .isEqualByComparingTo("1500");
+
+        ATM updatedATM = atmRepository.findById(ATM_CODE).orElseThrow();
+        assertThat(updatedATM.getCashAvailable())
+                .isEqualByComparingTo("10500");
+
+        BigDecimal withdrawAmount = new BigDecimal("200");
+        withdrawalService.withdraw(session, withdrawAmount);
+
+        Transaction tx2 = transactionService.getTransactionBySessionId(session.getSessionId());
+        assertThat(tx2.getTransactionType()).isEqualTo("WITHDRAWAL");
+        assertThat(tx2.getTransactionStatus()).isEqualTo("SUCCESS");
+
+        Account updatedAccount2 = accountRepository.findById(ACCOUNT_NUMBER).orElseThrow();
+        assertThat(updatedAccount2.getAvailableBalance())
+                .isEqualByComparingTo("1300");
+
+        ATM updatedATM2 = atmRepository.findById(ATM_CODE).orElseThrow();
+        assertThat(updatedATM2.getCashAvailable())
+                .isEqualByComparingTo("10300");
+
+        BigDecimal balance = balanceInquiryService.inquire(session);
+        assertThat(balance).isEqualByComparingTo("1300");
 
         sessionService.endSession(session.getSessionId(), "COMPLETED");
         Session ended = sessionRepository.findById(session.getSessionId()).orElseThrow();
