@@ -113,7 +113,6 @@ class FlowTest {
                 .isEqualByComparingTo("9800");
 
         sessionService.endSession(session.getSessionId(), "COMPLETED");
-
         Session ended = sessionRepository.findById(session.getSessionId()).orElseThrow();
         assertThat(ended.getSessionStatus()).isEqualTo("ENDED");
     }
@@ -140,7 +139,21 @@ class FlowTest {
                 .isEqualByComparingTo("10500");
 
         sessionService.endSession(session.getSessionId(), "COMPLETED");
+        Session ended = sessionRepository.findById(session.getSessionId()).orElseThrow();
+        assertThat(ended.getSessionStatus()).isEqualTo("ENDED");
+    }
 
+    // SUCCESS CASE (BALANCE INQUIRY)
+    @Test
+    void shouldInquireSuccessfully() {
+
+        Session session = sessionService.startSession(CARD_NUMBER, ATM_CODE);
+        sessionService.authenticateSession(session.getSessionId());
+
+        BigDecimal balance = balanceInquiryService.inquire(session);
+        assertThat(balance).isEqualByComparingTo("1000");
+
+        sessionService.endSession(session.getSessionId(), "COMPLETED");
         Session ended = sessionRepository.findById(session.getSessionId()).orElseThrow();
         assertThat(ended.getSessionStatus()).isEqualTo("ENDED");
     }
@@ -170,7 +183,6 @@ class FlowTest {
                 .isEqualByComparingTo("10000");
 
         sessionService.endSession(session.getSessionId(), "FAILED");
-
         Session ended = sessionRepository.findById(session.getSessionId()).orElseThrow();
         assertThat(ended.getSessionStatus()).isEqualTo("ENDED");
     }
