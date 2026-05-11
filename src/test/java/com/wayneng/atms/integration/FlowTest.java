@@ -23,7 +23,9 @@ class FlowTest {
     @Autowired private CustomerRepository customerRepository;
 
     @Autowired private SessionService sessionService;
+    @Autowired private DepositService depositService;
     @Autowired private WithdrawalService withdrawalService;
+    @Autowired private BalanceInquiryService balanceInquiryService;
     @Autowired private TransactionService transactionService;
 
     private static final String ATM_CODE = "ATM001";
@@ -99,6 +101,7 @@ class FlowTest {
         withdrawalService.withdraw(session, withdrawAmount);
 
         Transaction tx = transactionService.getTransactionBySessionId(session.getSessionId());
+        assertThat(tx.getTransactionType()).isEqualTo("WITHDRAWAL");
         assertThat(tx.getTransactionStatus()).isEqualTo("SUCCESS");
 
         Account updatedAccount = accountRepository.findById(ACCOUNT_NUMBER).orElseThrow();
@@ -108,6 +111,33 @@ class FlowTest {
         ATM updatedATM = atmRepository.findById(ATM_CODE).orElseThrow();
         assertThat(updatedATM.getCashAvailable())
                 .isEqualByComparingTo("9800");
+
+        sessionService.endSession(session.getSessionId(), "COMPLETED");
+
+        Session ended = sessionRepository.findById(session.getSessionId()).orElseThrow();
+        assertThat(ended.getSessionStatus()).isEqualTo("ENDED");
+    }
+
+    // SUCCESS CASE (ONE DEPOSIT)
+    @Test
+    void shouldDepositSuccessfully() {
+        Session session = sessionService.startSession(CARD_NUMBER, ATM_CODE);
+        sessionService.authenticateSession(session.getSessionId());
+        BigDecimal depositAmount = new BigDecimal("500");
+
+        depositService.deposit(session, depositAmount);
+
+        Transaction tx = transactionService.getTransactionBySessionId(session.getSessionId());
+        assertThat(tx.getTransactionType()).isEqualTo("DEPOSIT");
+        assertThat(tx.getTransactionStatus()).isEqualTo("SUCCESS");
+
+        Account updatedAccount = accountRepository.findById(ACCOUNT_NUMBER).orElseThrow();
+        assertThat(updatedAccount.getAvailableBalance())
+                .isEqualByComparingTo("1500");
+
+        ATM updatedATM = atmRepository.findById(ATM_CODE).orElseThrow();
+        assertThat(updatedATM.getCashAvailable())
+                .isEqualByComparingTo("10500");
 
         sessionService.endSession(session.getSessionId(), "COMPLETED");
 
