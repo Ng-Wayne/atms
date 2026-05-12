@@ -5,5 +5,5 @@ import java.math.BigDecimal;
 
 public interface WithdrawalService {
 
-    void withdraw(Session session, BigDecimal amount);
+    void withdraw(String sessionId, BigDecimal amount);
 }

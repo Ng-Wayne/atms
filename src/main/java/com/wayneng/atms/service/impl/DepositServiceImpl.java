@@ -15,10 +15,13 @@ public class DepositServiceImpl implements DepositService {
     private final AccountService accountService;
     private final TransactionService transactionService;
     private final ATMService atmService;
+    private final SessionService sessionService;
 
     @Override
     @Transactional
-    public void deposit(Session session, BigDecimal amount) {
+    public void deposit(String sessionId, BigDecimal amount) {
+
+        Session session = sessionService.getSession(sessionId);
 
         String cardNumber = session.getCard().getCardNumber();
 

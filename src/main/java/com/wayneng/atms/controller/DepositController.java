@@ -18,7 +18,7 @@ public class DepositController {
             @RequestBody AmountRequest request
     ) {
         try {
-            depositService.deposit(request.getSession(), request.getAmount());
+            depositService.deposit(request.getSessionId(), request.getAmount());
             return ResponseEntity.ok("Deposit successful");
         } catch (Exception e) {
             return ResponseEntity.badRequest().body("Deposit failed: " + e.getMessage());

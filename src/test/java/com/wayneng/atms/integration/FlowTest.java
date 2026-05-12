@@ -98,7 +98,7 @@ class FlowTest {
         sessionService.authenticateSession(session.getSessionId());
 
         BigDecimal withdrawAmount = new BigDecimal("200");
-        withdrawalService.withdraw(session, withdrawAmount);
+        withdrawalService.withdraw(session.getSessionId(), withdrawAmount);
 
         Transaction tx = transactionService.getTransactionBySessionId(session.getSessionId());
         assertThat(tx.getTransactionType()).isEqualTo("WITHDRAWAL");
@@ -124,7 +124,7 @@ class FlowTest {
         sessionService.authenticateSession(session.getSessionId());
 
         BigDecimal depositAmount = new BigDecimal("500");
-        depositService.deposit(session, depositAmount);
+        depositService.deposit(session.getSessionId(), depositAmount);
 
         Transaction tx = transactionService.getTransactionBySessionId(session.getSessionId());
         assertThat(tx.getTransactionType()).isEqualTo("DEPOSIT");
@@ -150,7 +150,7 @@ class FlowTest {
         Session session = sessionService.startSession(CARD_NUMBER, ATM_CODE);
         sessionService.authenticateSession(session.getSessionId());
 
-        BigDecimal balance = balanceInquiryService.inquire(session);
+        BigDecimal balance = balanceInquiryService.inquire(session.getSessionId());
         assertThat(balance).isEqualByComparingTo("1000");
 
         sessionService.endSession(session.getSessionId(), "COMPLETED");
@@ -166,7 +166,7 @@ class FlowTest {
         sessionService.authenticateSession(session.getSessionId());
 
         BigDecimal depositAmount = new BigDecimal("500");
-        depositService.deposit(session, depositAmount);
+        depositService.deposit(session.getSessionId(), depositAmount);
 
         Transaction tx = transactionService.getTransactionBySessionId(session.getSessionId());
         assertThat(tx.getTransactionType()).isEqualTo("DEPOSIT");
@@ -181,7 +181,7 @@ class FlowTest {
                 .isEqualByComparingTo("10500");
 
         BigDecimal withdrawAmount = new BigDecimal("200");
-        withdrawalService.withdraw(session, withdrawAmount);
+        withdrawalService.withdraw(session.getSessionId(), withdrawAmount);
 
         Transaction tx2 = transactionService.getTransactionBySessionId(session.getSessionId());
         assertThat(tx2.getTransactionType()).isEqualTo("WITHDRAWAL");
@@ -195,7 +195,7 @@ class FlowTest {
         assertThat(updatedATM2.getCashAvailable())
                 .isEqualByComparingTo("10300");
 
-        BigDecimal balance = balanceInquiryService.inquire(session);
+        BigDecimal balance = balanceInquiryService.inquire(session.getSessionId());
         assertThat(balance).isEqualByComparingTo("1300");
 
         sessionService.endSession(session.getSessionId(), "COMPLETED");
@@ -212,7 +212,7 @@ class FlowTest {
         BigDecimal withdrawAmount = new BigDecimal("2000");
 
         assertThatThrownBy(() ->
-                withdrawalService.withdraw(session, withdrawAmount)
+                withdrawalService.withdraw(session.getSessionId(), withdrawAmount)
         ).isInstanceOf(RuntimeException.class)
                 .hasMessageContaining("Insufficient balance");
 
@@ -242,7 +242,7 @@ class FlowTest {
         BigDecimal withdrawAmount = new BigDecimal("900.01");
 
         assertThatThrownBy(() ->
-                withdrawalService.withdraw(session, withdrawAmount)
+                withdrawalService.withdraw(session.getSessionId(), withdrawAmount)
         ).isInstanceOf(RuntimeException.class)
                 .hasMessageContaining("Minimum balance violated");
 
@@ -259,7 +259,7 @@ class FlowTest {
                 .isEqualByComparingTo("10000");
 
         BigDecimal withdrawAmount2 = new BigDecimal("900");
-        withdrawalService.withdraw(session, withdrawAmount2);
+        withdrawalService.withdraw(session.getSessionId(), withdrawAmount2);
 
         Transaction tx2 = transactionService.getTransactionBySessionId(session.getSessionId());
         assertThat(tx2.getTransactionType()).isEqualTo("WITHDRAWAL");

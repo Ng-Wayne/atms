@@ -15,10 +15,13 @@ public class WithdrawalServiceImpl implements WithdrawalService {
     private final AccountService accountService;
     private final TransactionService transactionService;
     private final ATMService atmService;
+    private final SessionService sessionService;
 
     @Override
     @Transactional
-    public void withdraw(Session session, BigDecimal amount) {
+    public void withdraw(String sessionId, BigDecimal amount) {
+
+        Session session = sessionService.getSession(sessionId);
 
         String cardNumber = session.getCard().getCardNumber();
 

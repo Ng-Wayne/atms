@@ -12,13 +12,10 @@ import java.math.BigDecimal;
 public class BalanceInquiryController {
 
     private final BalanceInquiryService balanceInquiryService;
-    private final SessionService sessionService;
 
     @GetMapping("/{sessionId}")
     public BigDecimal inquireBalance(@PathVariable String sessionId) {
 
-        return balanceInquiryService.inquire(
-                sessionService.getSession(sessionId)
-        );
+        return balanceInquiryService.inquire(sessionId);
     }
 }

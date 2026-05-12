@@ -5,5 +5,5 @@ import java.math.BigDecimal;
 
 public interface BalanceInquiryService {
 
-    BigDecimal inquire(Session session);
+    BigDecimal inquire(String sessionId);
 }

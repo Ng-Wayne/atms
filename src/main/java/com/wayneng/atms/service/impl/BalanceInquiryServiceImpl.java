@@ -3,6 +3,7 @@ package com.wayneng.atms.service.impl;
 import com.wayneng.atms.model.Session;
 import com.wayneng.atms.service.BalanceInquiryService;
 import com.wayneng.atms.service.AccountService;
+import com.wayneng.atms.service.SessionService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -13,10 +14,13 @@ import java.math.BigDecimal;
 public class BalanceInquiryServiceImpl implements BalanceInquiryService {
 
     private final AccountService accountService;
+    private final SessionService sessionService;
 
     @Override
     @Transactional(readOnly = true)
-    public BigDecimal inquire(Session session) {
+    public BigDecimal inquire(String sessionId) {
+
+        Session session = sessionService.getSession(sessionId);
 
         String accountNumber = session.getCard()
                 .getAccount()

@@ -18,7 +18,7 @@ public class WithdrawalController {
             @RequestBody AmountRequest request
     ) {
         try {
-            withdrawalService.withdraw(request.getSession(), request.getAmount());
+            withdrawalService.withdraw(request.getSessionId(), request.getAmount());
             return ResponseEntity.ok("Withdrawal successful");
         } catch (Exception e) {
             return ResponseEntity.badRequest().body("Withdrawal failed: " + e.getMessage());
