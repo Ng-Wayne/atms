@@ -34,7 +34,6 @@ class DepositControllerTest {
         request.setSessionId("abc123");
         request.setAmount(new BigDecimal("500.00"));
 
-        // No need to stub void method unless throwing exception
         doNothing().when(depositService)
                 .deposit("abc123", new BigDecimal("500.00"));
 
