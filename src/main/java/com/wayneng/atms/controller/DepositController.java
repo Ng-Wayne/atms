@@ -14,7 +14,7 @@ public class DepositController {
     private final DepositService depositService;
 
     @PostMapping
-    public ResponseEntity<String> withdraw(
+    public ResponseEntity<String> deposit(
             @RequestBody AmountRequest request
     ) {
         try {
