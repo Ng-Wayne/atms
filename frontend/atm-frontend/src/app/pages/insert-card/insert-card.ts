@@ -11,6 +11,8 @@ import { CommonModule } from '@angular/common';
 })
 export class InsertCardComponent {
 
+  isFocused: boolean = false;
+
   cardNumber: string = '';
 
   boxes = Array(16);

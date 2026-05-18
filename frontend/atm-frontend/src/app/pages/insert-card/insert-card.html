@@ -4,7 +4,11 @@
 
   <div class="card-container" (click)="focusInput()">
 
-    <div class="digit-box" *ngFor="let box of boxes; let i = index">
+    <div
+      class="digit-box"
+      [class.active]="isFocused"
+      *ngFor="let box of boxes; let i = index"
+    >
       {{ cardNumber[i] || '' }}
     </div>
 
@@ -14,6 +18,8 @@
       maxlength="16"
       [(ngModel)]="cardNumber"
       (input)="onInputChange()"
+      (focus)="isFocused = true"
+      (blur)="isFocused = false"
     />
 
   </div>
