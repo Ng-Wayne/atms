@@ -1,15 +1,23 @@
 <div class="container">
+
   <h1>Insert Your Card</h1>
 
-  <div class="card-input-wrapper">
+  <div class="card-container" (click)="focusInput()">
+
+    <div class="digit-box" *ngFor="let box of boxes; let i = index">
+      {{ cardNumber[i] || '' }}
+    </div>
+
     <input
+      #hiddenInput
       type="text"
       maxlength="16"
       [(ngModel)]="cardNumber"
       (input)="onInputChange()"
-      placeholder="Enter 16-digit card number"
     />
+
   </div>
 
   <button (click)="submit()">Continue</button>
+
 </div>
