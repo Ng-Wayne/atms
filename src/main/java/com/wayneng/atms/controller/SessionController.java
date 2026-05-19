@@ -6,7 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/sessions")
+@RequestMapping("/api/session")
 @RequiredArgsConstructor
 public class SessionController {
 

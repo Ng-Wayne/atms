@@ -7,7 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/withdrawal")
+@RequestMapping("/api/withdraw")
 @RequiredArgsConstructor
 public class WithdrawalController {
 
