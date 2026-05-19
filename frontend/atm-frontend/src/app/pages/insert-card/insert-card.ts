@@ -6,8 +6,7 @@ import { CommonModule } from '@angular/common';
   selector: 'app-insert-card',
   standalone: true,
   imports: [FormsModule, CommonModule],
-  templateUrl: './insert-card.html',
-  styleUrl: './insert-card.css'
+  templateUrl: './insert-card.html'
 })
 export class InsertCardComponent {
 

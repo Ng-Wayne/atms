@@ -1,13 +1,26 @@
-<div class="container">
+<div class="min-h-screen bg-gray-100 flex flex-col items-center justify-center">
 
-  <h1>Insert Your Card</h1>
+  <h1 class="text-5xl font-bold mb-12">
+    Insert Your Card
+  </h1>
 
-  <div class="card-container" (click)="focusInput()">
+  <div
+    class="flex gap-3 relative mb-10 cursor-text"
+    (click)="focusInput()"
+  >
 
     <div
-      class="digit-box"
-      [class.active]="isFocused"
       *ngFor="let box of boxes; let i = index"
+      class="
+        w-14 h-16
+        border-2 border-black
+        rounded-md
+        flex items-center justify-center
+        text-3xl font-bold
+        transition-all duration-200
+      "
+      [class.bg-green-300]="isFocused"
+      [class.bg-white]="!isFocused"
     >
       {{ cardNumber[i] || '' }}
     </div>
@@ -20,10 +33,23 @@
       (input)="onInputChange()"
       (focus)="isFocused = true"
       (blur)="isFocused = false"
+      class="absolute opacity-0 pointer-events-none"
     />
 
   </div>
 
-  <button (click)="submit()">Continue</button>
+  <button
+    (click)="submit()"
+    class="
+      bg-black text-white
+      px-8 py-3
+      rounded-lg
+      text-lg
+      hover:bg-gray-800
+      transition-all duration-200
+    "
+  >
+    Continue
+  </button>
 
 </div>
