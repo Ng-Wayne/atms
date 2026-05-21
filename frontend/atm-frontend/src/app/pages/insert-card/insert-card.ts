@@ -10,25 +10,45 @@ import { CommonModule } from '@angular/common';
 })
 export class InsertCardComponent {
 
-  isFocused: boolean = false;
+  isCardFocused = false;
+  isAtmFocused = false;
   cardNumber: string = '';
-  boxes = Array(16);
+  atmCode: string = '';
+  cnBoxes = Array(16);
+  acBoxes = Array(6);
 
-  @ViewChild('hiddenInput') hiddenInput!: ElementRef;
+  @ViewChild('cardInput') cardInput!: ElementRef;
+  @ViewChild('atmInput') atmInput!: ElementRef;
 
-  focusInput() {
-    this.hiddenInput.nativeElement.focus();
+  focusCardInput() {
+    this.cardInput.nativeElement.focus();
   }
 
-  onInputChange() {
-    this.cardNumber = this.cardNumber.replace(/\D/g, '');
+  focusAtmInput() {
+    this.atmInput.nativeElement.focus();
+  }
 
-    if (this.cardNumber.length > 16) {
-      this.cardNumber = this.cardNumber.slice(0, 16);
+  onCardNumberChange() {
+    this.cardNumber = this.sanitizeNumericInput(this.cardNumber, 16);
+  }
+
+  onAtmCodeChange() {
+    this.atmCode = this.sanitizeNumericInput(this.atmCode, 6);
+  }
+
+  sanitizeNumericInput(value: string, maxLength: number): string {
+
+    value = value.replace(/\D/g, '');
+
+    if (value.length > maxLength) {
+      value = value.slice(0, maxLength);
     }
+
+    return value;
   }
 
   submit() {
     console.log(this.cardNumber);
+    console.log(this.atmCode);
   }
 }

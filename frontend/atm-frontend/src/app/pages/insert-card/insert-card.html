@@ -6,11 +6,11 @@
 
   <div
     class="flex gap-3 relative mb-10 cursor-text"
-    (click)="focusInput()"
+    (click)="focusCardInput()"
   >
 
     <div
-      *ngFor="let box of boxes; let i = index"
+      *ngFor="let cnBox of cnBoxes; let i = index"
       class="
         w-14 h-16
         border-2 border-black
@@ -19,21 +19,59 @@
         text-3xl font-bold
         transition-all duration-200
       "
-      [class.bg-green-300]="isFocused"
-      [class.bg-white]="!isFocused"
+      [class.bg-green-300]="isCardFocused"
+      [class.bg-white]="!isCardFocused"
     >
       {{ cardNumber[i] || '' }}
     </div>
 
     <input
-      #hiddenInput
+      #cardInput
       type="text"
       maxlength="16"
       [(ngModel)]="cardNumber"
-      (input)="onInputChange()"
-      (focus)="isFocused = true"
-      (blur)="isFocused = false"
-      class="absolute opacity-0 pointer-events-none"
+      (input)="onCardNumberChange()"
+      (focus)="isCardFocused = true"
+      (blur)="isCardFocused = false"
+      class="absolute opacity-0"
+    />
+
+  </div>
+
+  <h1 class="text-5xl font-bold mb-12">
+    ATM Code
+  </h1>
+
+  <div
+    class="flex gap-3 relative mb-10 cursor-text"
+    (click)="focusAtmInput()"
+  >
+
+    <div
+      *ngFor="let acBox of acBoxes; let i = index"
+      class="
+        w-14 h-16
+        border-2 border-black
+        rounded-md
+        flex items-center justify-center
+        text-3xl font-bold
+        transition-all duration-200
+      "
+      [class.bg-green-300]="isAtmFocused"
+      [class.bg-white]="!isAtmFocused"
+    >
+      {{ atmCode[i] || '' }}
+    </div>
+
+    <input
+      #atmInput
+      type="text"
+      maxlength="6"
+      [(ngModel)]="atmCode"
+      (input)="onAtmCodeChange()"
+      (focus)="isAtmFocused = true"
+      (blur)="isAtmFocused = false"
+      class="absolute opacity-0"
     />
 
   </div>
