@@ -1,9 +1,9 @@
 package com.wayneng.atms.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.UuidGenerator;
-
 import java.util.List;
 
 @Entity
@@ -28,9 +28,11 @@ public class Customer {
     private String status;
 
     @OneToMany(mappedBy = "customer", fetch = FetchType.LAZY)
+    @JsonIgnore
     private List<Account> accounts;
 
     @OneToMany(mappedBy = "customer", fetch = FetchType.LAZY)
+    @JsonIgnore
     private List<Card> cards;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)

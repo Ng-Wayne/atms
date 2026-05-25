@@ -2,6 +2,7 @@ package com.wayneng.atms.model;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.UuidGenerator;
@@ -35,6 +36,7 @@ public class Session {
     private String endReason;
     
     @OneToMany(mappedBy = "session", fetch = FetchType.LAZY)
+    @JsonIgnore
     private List<Transaction> transactions;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)

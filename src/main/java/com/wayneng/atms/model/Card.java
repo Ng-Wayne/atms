@@ -2,6 +2,7 @@ package com.wayneng.atms.model;
 
 import java.time.LocalDate;
 import java.util.List;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -33,9 +34,11 @@ public class Card {
     private int failedPinAttempts;
 
     @OneToMany(mappedBy = "card", fetch = FetchType.LAZY)
+    @JsonIgnore
     private List<Transaction> transactions;
 
     @OneToMany(mappedBy = "card", fetch = FetchType.LAZY)
+    @JsonIgnore
     private List<Session> sessions;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)

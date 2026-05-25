@@ -1,5 +1,6 @@
 package com.wayneng.atms.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 import java.math.BigDecimal;
@@ -39,9 +40,11 @@ public class Account {
     private BigDecimal dailyWithdrawalLimit;
 
     @OneToMany(mappedBy = "account", fetch = FetchType.LAZY)
+    @JsonIgnore
     private List<Transaction> transactions;
 
     @OneToMany(mappedBy = "account", fetch = FetchType.LAZY)
+    @JsonIgnore
     private List<Card> cards;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
