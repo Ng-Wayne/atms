@@ -33,12 +33,23 @@ export class InsertCardComponent {
   }
 
   onAtmCodeChange() {
-    this.atmCode = this.sanitizeNumericInput(this.atmCode, 6);
+    this.atmCode = this.sanitizeAlphaNumericInput(this.atmCode, 6);
   }
 
   sanitizeNumericInput(value: string, maxLength: number): string {
 
     value = value.replace(/\D/g, '');
+
+    if (value.length > maxLength) {
+      value = value.slice(0, maxLength);
+    }
+
+    return value;
+  }
+
+  sanitizeAlphaNumericInput(value: string, maxLength: number): string {
+
+    value = value.replace(/[^a-zA-Z0-9]/g, '');
 
     if (value.length > maxLength) {
       value = value.slice(0, maxLength);
