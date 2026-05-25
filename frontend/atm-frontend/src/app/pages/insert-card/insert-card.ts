@@ -1,4 +1,5 @@
 import { Component, ElementRef, ViewChild } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 
@@ -19,6 +20,8 @@ export class InsertCardComponent {
 
   @ViewChild('cardInput') cardInput!: ElementRef;
   @ViewChild('atmInput') atmInput!: ElementRef;
+
+  constructor(private http: HttpClient) {}
 
   focusCardInput() {
     this.cardInput.nativeElement.focus();
@@ -59,7 +62,26 @@ export class InsertCardComponent {
   }
 
   submit() {
-    console.log(this.cardNumber);
-    console.log(this.atmCode);
+
+    console.log('SUBMIT CLICKED');
+
+    this.http.post(
+      'http://localhost:8080/api/session/start',
+      {},
+      {
+        params: {
+          cardNumber: this.cardNumber,
+          atmCode: this.atmCode
+        }
+      }
+    ).subscribe({
+      next: (response) => {
+        console.log('Session started:', response);
+      },
+      error: (err) => {
+        console.error('Error:', err);
+      }
+    });
+
   }
 }
