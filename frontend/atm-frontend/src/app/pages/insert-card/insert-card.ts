@@ -63,8 +63,6 @@ export class InsertCardComponent {
 
   submit() {
 
-    console.log('SUBMIT CLICKED');
-
     this.http.post(
       'http://localhost:8080/api/session/start',
       {},
