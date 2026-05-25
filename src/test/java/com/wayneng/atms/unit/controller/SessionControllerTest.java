@@ -91,12 +91,15 @@ class SessionControllerTest {
     @Test
     void authenticateSession_success() throws Exception {
 
-        doNothing().when(sessionService).authenticateSession("abc123");
+        doNothing().when(sessionService)
+                .authenticateSession("abc123", "1234");
 
-        mockMvc.perform(post("/api/sessions/{sessionId}/authenticate", "abc123"))
+        mockMvc.perform(post("/api/session/{sessionId}/authenticate", "abc123")
+                        .param("pin", "1234"))
                 .andExpect(status().isOk());
 
-        verify(sessionService).authenticateSession("abc123");
+        verify(sessionService)
+                .authenticateSession("abc123", "1234");
     }
 
     @Test

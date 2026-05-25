@@ -163,7 +163,7 @@ class SessionServiceImplTest {
         when(sessionRepository.findBySessionId("S1"))
                 .thenReturn(Optional.of(session));
 
-        sessionService.authenticateSession("S1");
+        sessionService.authenticateSession("S1", "1234");
 
         assertTrue(session.getAuthenticated());
         verify(sessionRepository).save(session);

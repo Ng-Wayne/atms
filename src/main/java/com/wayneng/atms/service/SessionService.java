@@ -12,7 +12,7 @@ public interface SessionService {
 
     void recordFailedPin(String sessionId);
 
-    void authenticateSession(String sessionId);
+    void authenticateSession(String sessionId, String pin);
 
     boolean isAuthenticated(String sessionId);
 

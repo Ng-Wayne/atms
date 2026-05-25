@@ -36,8 +36,9 @@ public class SessionController {
     }
 
     @PostMapping("/{sessionId}/authenticate")
-    public void authenticateSession(@PathVariable String sessionId) {
-        sessionService.authenticateSession(sessionId);
+    public void authenticateSession(@PathVariable String sessionId,
+                                    @RequestParam String pin) {
+        sessionService.authenticateSession(sessionId, pin);
     }
 
     @GetMapping("/{sessionId}/authenticated")

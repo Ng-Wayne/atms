@@ -95,7 +95,7 @@ class FlowTest {
     void shouldWithdrawSuccessfully() {
 
         Session session = sessionService.startSession(CARD_NUMBER, ATM_CODE);
-        sessionService.authenticateSession(session.getSessionId());
+        sessionService.authenticateSession(session.getSessionId(), PIN);
 
         BigDecimal withdrawAmount = new BigDecimal("200");
         withdrawalService.withdraw(session.getSessionId(), withdrawAmount);
@@ -121,7 +121,7 @@ class FlowTest {
     @Test
     void shouldDepositSuccessfully() {
         Session session = sessionService.startSession(CARD_NUMBER, ATM_CODE);
-        sessionService.authenticateSession(session.getSessionId());
+        sessionService.authenticateSession(session.getSessionId(), PIN);
 
         BigDecimal depositAmount = new BigDecimal("500");
         depositService.deposit(session.getSessionId(), depositAmount);
@@ -148,7 +148,7 @@ class FlowTest {
     void shouldInquireSuccessfully() {
 
         Session session = sessionService.startSession(CARD_NUMBER, ATM_CODE);
-        sessionService.authenticateSession(session.getSessionId());
+        sessionService.authenticateSession(session.getSessionId(), PIN);
 
         BigDecimal balance = balanceInquiryService.inquire(session.getSessionId());
         assertThat(balance).isEqualByComparingTo("1000");
@@ -163,7 +163,7 @@ class FlowTest {
     void shouldDepositWithdrawInquireSuccessfully() {
 
         Session session = sessionService.startSession(CARD_NUMBER, ATM_CODE);
-        sessionService.authenticateSession(session.getSessionId());
+        sessionService.authenticateSession(session.getSessionId(), PIN);
 
         BigDecimal depositAmount = new BigDecimal("500");
         depositService.deposit(session.getSessionId(), depositAmount);
@@ -208,7 +208,7 @@ class FlowTest {
     void shouldFailWithdrawal_dueToInsufficientBalance() {
 
         Session session = sessionService.startSession(CARD_NUMBER, ATM_CODE);
-        sessionService.authenticateSession(session.getSessionId());
+        sessionService.authenticateSession(session.getSessionId(), PIN);
         BigDecimal withdrawAmount = new BigDecimal("2000");
 
         assertThatThrownBy(() ->
@@ -238,7 +238,7 @@ class FlowTest {
     void shouldFailWithdrawal_dueToMinimumBalance() {
 
         Session session = sessionService.startSession(CARD_NUMBER, ATM_CODE);
-        sessionService.authenticateSession(session.getSessionId());
+        sessionService.authenticateSession(session.getSessionId(), PIN);
         BigDecimal withdrawAmount = new BigDecimal("900.01");
 
         assertThatThrownBy(() ->

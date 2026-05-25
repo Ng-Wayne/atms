@@ -75,9 +75,16 @@ public class SessionServiceImpl implements SessionService {
 
     @Override
     @Transactional(propagation = Propagation.REQUIRES_NEW)
-    public void authenticateSession(String sessionId) {
+    public void authenticateSession(String sessionId, String pin) {
 
         Session session = getSession(sessionId);
+        String cardNumber = session.getCard().getCardNumber();
+
+        boolean isValid = cardService.validatePin(cardNumber, pin);
+
+        if (!isValid) {
+            throw new RuntimeException("Invalid PIN");
+        }
 
         session.setAuthenticated(true);
 
