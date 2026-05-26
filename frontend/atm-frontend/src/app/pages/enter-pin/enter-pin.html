@@ -1,1 +1,55 @@
-<p>enter-pin works!</p>
+<div class="min-h-screen bg-gray-100 flex flex-col items-center justify-center">
+
+  <h1 class="text-5xl font-bold mb-12">
+    Enter PIN
+  </h1>
+
+  <div
+    class="flex gap-3 relative mb-10 cursor-text"
+    (click)="focusPinInput()"
+  >
+
+    <div
+      *ngFor="let box of boxes; let i = index"
+      class="
+        w-14 h-16
+        border-2 border-black
+        rounded-md
+        flex items-center justify-center
+        text-3xl font-bold
+        transition-all duration-200
+      "
+      [class.bg-green-300]="isPinFocused"
+      [class.bg-white]="!isPinFocused"
+    >
+      {{ pin[i] || '' }}
+    </div>
+
+    <input
+      #pinInput
+      type="text"
+      maxlength="16"
+      [(ngModel)]="pin"
+      (input)="onPinChange()"
+      (focus)="isPinFocused = true"
+      (blur)="isPinFocused = false"
+      class="absolute opacity-0"
+    />
+
+  </div>
+
+  <button
+    (click)="submit()"
+    class="
+      bg-black text-white
+      px-8 py-3
+      rounded-lg
+      text-lg
+      hover:bg-gray-800
+      transition-all duration-200
+    "
+  >
+    Continue
+  </button>
+
+</div>
