@@ -24,6 +24,7 @@ public class Card {
     @Column(nullable = false)
     private String cardStatus;
 
+    @JsonIgnore
     @Column(nullable = false)
     private String pinHash;
 
