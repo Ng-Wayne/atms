@@ -2,6 +2,7 @@ import { Component, ElementRef, ViewChild } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { SessionService } from '../../services/session.service';
 
 @Component({
   selector: 'app-insert-card',
@@ -21,7 +22,10 @@ export class InsertCardComponent {
   @ViewChild('cardInput') cardInput!: ElementRef;
   @ViewChild('atmInput') atmInput!: ElementRef;
 
-  constructor(private http: HttpClient) {}
+  constructor(
+    private http: HttpClient,
+    private sessionService: SessionService
+  ) {}
 
   focusCardInput() {
     this.cardInput.nativeElement.focus();
@@ -63,7 +67,7 @@ export class InsertCardComponent {
 
   submit() {
 
-    this.http.post(
+    this.http.post<any>(
       'http://localhost:8080/api/session/start',
       {},
       {
@@ -74,12 +78,13 @@ export class InsertCardComponent {
       }
     ).subscribe({
       next: (response) => {
+        this.sessionService.setSessionId(response.sessionId);
+        console.log('Stored Session ID:', response.sessionId);
         console.log('Session started:', response);
       },
       error: (err) => {
         console.error('Error:', err);
       }
     });
-
   }
 }
