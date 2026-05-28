@@ -2,6 +2,7 @@ import { Component, ViewChild, ElementRef } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { SessionService } from '../../services/session.service';
 
 @Component({
   selector: 'app-enter-pin',
@@ -17,7 +18,10 @@ export class EnterPinComponent {
 
   @ViewChild('pinInput') pinInput!: ElementRef;
 
-  constructor(private http: HttpClient) {}
+  constructor(
+    private http: HttpClient,
+    private sessionService: SessionService
+  ) {}
 
   focusPinInput() {
     this.pinInput.nativeElement.focus();
@@ -40,6 +44,24 @@ export class EnterPinComponent {
 
   submit() {
 
-    console.log(this.pin);
+    const sessionId = this.sessionService.getSessionId();
+
+    this.http.post(
+      `http://localhost:8080/api/session/${sessionId}/authenticate`,
+      {},
+      {
+        params: {
+          pin: this.pin
+        }
+      }
+    ).subscribe({
+      next: (response) => {
+        console.log('Session authenticated:', response);
+      },
+      error: (err) => {
+        console.error('Error:', err);
+      }
+    });
+
   }
 }
