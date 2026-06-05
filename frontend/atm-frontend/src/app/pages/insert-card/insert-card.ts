@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { SessionService } from '../../services/session.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-insert-card',
@@ -24,7 +25,8 @@ export class InsertCardComponent {
 
   constructor(
     private http: HttpClient,
-    private sessionService: SessionService
+    private sessionService: SessionService,
+    private snackBar: MatSnackBar
   ) {}
 
   focusCardInput() {
@@ -84,6 +86,14 @@ export class InsertCardComponent {
       },
       error: (err) => {
         console.error('Error:', err);
+
+        this.snackBar.open(
+          err.error?.message || 'Unable to start session.',
+          'Close',
+          {
+            duration: 3000
+          }
+        );
       }
     });
   }
