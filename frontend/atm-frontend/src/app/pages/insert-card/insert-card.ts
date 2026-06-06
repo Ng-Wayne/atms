@@ -1,4 +1,5 @@
 import { Component, ElementRef, ViewChild } from '@angular/core';
+import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
@@ -26,7 +27,8 @@ export class InsertCardComponent {
   constructor(
     private http: HttpClient,
     private sessionService: SessionService,
-    private snackBar: MatSnackBar
+    private snackBar: MatSnackBar,
+    private router: Router
   ) {}
 
   focusCardInput() {
@@ -83,6 +85,7 @@ export class InsertCardComponent {
         this.sessionService.setSessionId(response.sessionId);
         console.log('Stored Session ID:', response.sessionId);
         console.log('Session started:', response);
+        this.router.navigate(['/enter-pin']);
       },
       error: (err) => {
         console.error('Error:', err);
