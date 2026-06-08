@@ -1,6 +1,8 @@
 package com.wayneng.atms.service.impl;
 
 import java.time.LocalDateTime;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.annotation.Propagation;
@@ -21,6 +23,10 @@ public class SessionServiceImpl implements SessionService {
     private final CardService cardService;
     private final ATMService atmService;
     private static final int MAX_FAILED_ATTEMPTS = 3;
+
+    @Lazy
+    @Autowired
+    private SessionService sessionService;
 
     @Override
     public Session getSession(String sessionId) {
@@ -67,7 +73,7 @@ public class SessionServiceImpl implements SessionService {
         session.setFailedPinAttempts(attempts);
 
         if (attempts >= MAX_FAILED_ATTEMPTS) {
-            endSession(sessionId, "CARD_BLOCKED");
+            sessionService.endSession(sessionId, "CARD_BLOCKED");
         }
 
         sessionRepository.save(session);
@@ -83,6 +89,7 @@ public class SessionServiceImpl implements SessionService {
         boolean isValid = cardService.validatePin(cardNumber, pin);
 
         if (!isValid) {
+            sessionService.recordFailedPin(sessionId);
             throw new RuntimeException("Invalid PIN");
         }
 
