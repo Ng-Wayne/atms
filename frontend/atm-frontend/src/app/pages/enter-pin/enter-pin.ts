@@ -1,5 +1,6 @@
 import { Component, ViewChild, ElementRef } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { SessionService } from '../../services/session.service';
@@ -20,7 +21,8 @@ export class EnterPinComponent {
 
   constructor(
     private http: HttpClient,
-    private sessionService: SessionService
+    private sessionService: SessionService,
+    private router: Router
   ) {}
 
   focusPinInput() {
@@ -60,6 +62,10 @@ export class EnterPinComponent {
       },
       error: (err) => {
         console.error('Error:', err);
+
+        if (err.error?.message === 'MAX_PIN_ATTEMPTS') {
+          this.router.navigate(['/']);
+        }
       }
     });
 
