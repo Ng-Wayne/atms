@@ -64,7 +64,6 @@ public class SessionServiceImpl implements SessionService {
     }
 
     @Override
-    @Transactional(propagation = Propagation.REQUIRES_NEW)
     public void recordFailedPin(String sessionId) {
 
         Session session = getSession(sessionId);
@@ -80,7 +79,6 @@ public class SessionServiceImpl implements SessionService {
     }
 
     @Override
-    @Transactional(propagation = Propagation.REQUIRES_NEW)
     public void authenticateSession(String sessionId, String pin) {
 
         Session session = getSession(sessionId);
@@ -104,7 +102,6 @@ public class SessionServiceImpl implements SessionService {
     }
 
     @Override
-    @Transactional(propagation = Propagation.REQUIRES_NEW)
     public void endSession(String sessionId, String reason) {
 
         Session session = getSession(sessionId);
