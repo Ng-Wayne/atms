@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { SessionService } from '../../services/session.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-enter-pin',
@@ -22,6 +23,7 @@ export class EnterPinComponent {
   constructor(
     private http: HttpClient,
     private sessionService: SessionService,
+    private snackBar: MatSnackBar,
     private router: Router
   ) {}
 
@@ -65,9 +67,16 @@ export class EnterPinComponent {
 
         if (err.error?.message === 'SESSION_MAX_PIN_ATTEMPTS') {
           this.router.navigate(['/']);
+
+          this.snackBar.open(
+            'Session Ended: Max Pin Attempts Exceeded',
+            'Close',
+            {
+              duration: 10000
+            }
+          );
         }
       }
     });
-
   }
 }
