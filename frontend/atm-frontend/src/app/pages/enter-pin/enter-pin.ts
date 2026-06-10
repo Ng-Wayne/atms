@@ -65,6 +65,16 @@ export class EnterPinComponent {
       error: (err) => {
         console.error('Error:', err);
 
+        if (err.error?.message === 'Invalid PIN') {
+          this.snackBar.open(
+            'Invalid Pin',
+            'Close',
+            {
+              duration: 5000
+            }
+          );
+        }
+
         if (err.error?.message === 'SESSION_MAX_PIN_ATTEMPTS') {
           this.router.navigate(['/']);
 
