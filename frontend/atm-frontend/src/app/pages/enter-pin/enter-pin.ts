@@ -63,7 +63,7 @@ export class EnterPinComponent {
       error: (err) => {
         console.error('Error:', err);
 
-        if (err.error?.message === 'MAX_PIN_ATTEMPTS') {
+        if (err.error?.message === 'SESSION_MAX_PIN_ATTEMPTS') {
           this.router.navigate(['/']);
         }
       }

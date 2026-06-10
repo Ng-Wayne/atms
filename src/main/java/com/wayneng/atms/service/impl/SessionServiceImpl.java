@@ -112,6 +112,6 @@ public class SessionServiceImpl implements SessionService {
 
         sessionRepository.save(session);
 
-        throw new RuntimeException("MAX_PIN_ATTEMPTS");
+        throw new RuntimeException("SESSION_MAX_PIN_ATTEMPTS");
     }
 }
