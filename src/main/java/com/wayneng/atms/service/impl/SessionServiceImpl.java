@@ -72,7 +72,7 @@ public class SessionServiceImpl implements SessionService {
         session.setFailedPinAttempts(attempts);
 
         if (attempts >= MAX_FAILED_ATTEMPTS) {
-            sessionService.endSession(sessionId, "CARD_BLOCKED");
+            sessionService.endSession(sessionId, "MAX_FAILED_ATTEMPTS");
         }
 
         sessionRepository.save(session);
