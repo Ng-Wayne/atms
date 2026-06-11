@@ -1,8 +1,6 @@
 package com.wayneng.atms.service.impl;
 
 import java.util.List;
-
-import com.wayneng.atms.service.SessionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
