@@ -83,8 +83,14 @@ public class SessionServiceImpl implements SessionService {
 
         Session session = getSession(sessionId);
         String cardNumber = session.getCard().getCardNumber();
+        boolean isValid;
 
-        boolean isValid = cardService.validatePin(cardNumber, pin);
+        try {
+            isValid = cardService.validatePin(cardNumber, pin);
+        } catch (RuntimeException e) {
+            sessionService.recordFailedPin(sessionId);
+            throw e;
+        }
 
         if (!isValid) {
             sessionService.recordFailedPin(sessionId);
