@@ -86,6 +86,19 @@ export class EnterPinComponent {
             }
           );
         }
+
+        if (err.error?.message === 'CARD_MAX_PIN_ATTEMPTS') {
+          this.router.navigate(['/']);
+
+          this.snackBar.open(
+            'Card Blocked: Max Pin Attempts Exceeded',
+            'Close',
+            {
+              duration: 10000
+            }
+          );
+        }
+
       }
     });
   }

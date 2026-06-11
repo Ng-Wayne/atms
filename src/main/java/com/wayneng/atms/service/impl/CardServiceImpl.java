@@ -1,6 +1,10 @@
 package com.wayneng.atms.service.impl;
 
 import java.util.List;
+
+import com.wayneng.atms.service.SessionService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import com.wayneng.atms.model.Card;
@@ -15,6 +19,10 @@ public class CardServiceImpl implements CardService {
     private final CardRepository cardRepository;
     private final BCryptPasswordEncoder passwordEncoder;
     private static final int MAX_FAILED_ATTEMPTS = 5;
+
+    @Lazy
+    @Autowired
+    private CardService cardService;
 
     @Override
     public Card getCardByNumber(String cardNumber) {
@@ -53,7 +61,7 @@ public class CardServiceImpl implements CardService {
         card.setFailedPinAttempts(attempts);
 
         if (attempts >= MAX_FAILED_ATTEMPTS) {
-            card.setCardStatus("BLOCKED");
+           cardService.blockCard(cardNumber);
         }
 
         cardRepository.save(card);
@@ -73,6 +81,8 @@ public class CardServiceImpl implements CardService {
 
         card.setCardStatus("BLOCKED");
         cardRepository.save(card);
+
+        throw new RuntimeException("CARD_MAX_PIN_ATTEMPTS");
     }
 
     @Override
