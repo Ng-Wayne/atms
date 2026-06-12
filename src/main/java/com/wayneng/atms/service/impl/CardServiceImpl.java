@@ -16,7 +16,7 @@ public class CardServiceImpl implements CardService {
 
     private final CardRepository cardRepository;
     private final BCryptPasswordEncoder passwordEncoder;
-    private static final int MAX_FAILED_ATTEMPTS = 5;
+    private static final int MAX_FAILED_ATTEMPTS = 10;
 
     @Lazy
     @Autowired

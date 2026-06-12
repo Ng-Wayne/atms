@@ -61,6 +61,7 @@ export class EnterPinComponent {
     ).subscribe({
       next: (response) => {
         console.log('Session authenticated:', response);
+        this.router.navigate(['/home']);
       },
       error: (err) => {
         console.error('Error:', err);
