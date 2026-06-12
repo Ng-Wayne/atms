@@ -60,6 +60,7 @@ public class CardServiceImpl implements CardService {
 
         if (attempts >= MAX_FAILED_ATTEMPTS) {
            cardService.blockCard(cardNumber);
+           throw new RuntimeException("CARD_MAX_PIN_ATTEMPTS");
         }
 
         cardRepository.save(card);
@@ -79,8 +80,6 @@ public class CardServiceImpl implements CardService {
 
         card.setCardStatus("BLOCKED");
         cardRepository.save(card);
-
-        throw new RuntimeException("CARD_MAX_PIN_ATTEMPTS");
     }
 
     @Override

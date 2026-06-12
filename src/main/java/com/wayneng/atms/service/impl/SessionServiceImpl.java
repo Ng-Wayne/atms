@@ -72,7 +72,8 @@ public class SessionServiceImpl implements SessionService {
         session.setFailedPinAttempts(attempts);
 
         if (attempts >= MAX_FAILED_ATTEMPTS) {
-            sessionService.endSession(sessionId, "MAX_FAILED_ATTEMPTS");
+            sessionService.endSession(sessionId, "MAX_FAILED_PIN_ATTEMPTS");
+            throw new RuntimeException("SESSION_MAX_PIN_ATTEMPTS");
         }
 
         sessionRepository.save(session);
@@ -88,7 +89,7 @@ public class SessionServiceImpl implements SessionService {
         try {
             isValid = cardService.validatePin(cardNumber, pin);
         } catch (RuntimeException e) {
-            sessionService.recordFailedPin(sessionId);
+            sessionService.endSession(sessionId, "CARD_BLOCKED");
             throw e;
         }
 
@@ -117,7 +118,5 @@ public class SessionServiceImpl implements SessionService {
         session.setEndReason(reason);
 
         sessionRepository.save(session);
-
-        throw new RuntimeException("SESSION_MAX_PIN_ATTEMPTS");
     }
 }
