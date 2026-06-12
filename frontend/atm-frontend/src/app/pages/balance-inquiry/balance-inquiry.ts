@@ -3,10 +3,11 @@ import { SessionService } from '../../services/session.service';
 import { HttpClient } from '@angular/common/http';
 import { AfterViewInit } from '@angular/core';
 import { ChangeDetectorRef } from '@angular/core';
+import { DecimalPipe } from '@angular/common';
 
 @Component({
   selector: 'app-balance-inquiry',
-  imports: [],
+  imports: [DecimalPipe],
   templateUrl: './balance-inquiry.html'
 })
 export class BalanceInquiryComponent {

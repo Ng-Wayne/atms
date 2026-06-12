@@ -4,8 +4,18 @@
     Available Balance
   </h1>
 
-  <div>
-    {{ balance }}
+  <div
+    class="
+      bg-white
+      shadow-md
+      rounded-xl
+      px-8 py-6
+      text-center
+      text-4xl font-bold
+      text-green-600
+    "
+  >
+    MYR {{ balance | number:'1.2-2' }}
   </div>
 
 </div>
