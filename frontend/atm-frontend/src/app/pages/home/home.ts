@@ -16,4 +16,8 @@ export class HomeComponent {
     this.router.navigate(['/balance-inquiry']);
   }
 
+  withdraw() {
+    this.router.navigate(['/withdraw']);
+  }
+
 }
