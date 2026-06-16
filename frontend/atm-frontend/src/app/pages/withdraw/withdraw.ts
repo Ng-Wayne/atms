@@ -40,7 +40,15 @@ export class WithdrawComponent {
       }
     ).subscribe({
       next: (response) => {
+        this.router.navigate(['/home']);
 
+        this.snackBar.open(
+          'Withdrawal Successful',
+          'Close',
+          {
+            duration: 5000
+          }
+        );
       },
       error: (err) => {
         console.error('Error:', err);
