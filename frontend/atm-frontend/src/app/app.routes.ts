@@ -4,6 +4,7 @@ import { EnterPinComponent } from './pages/enter-pin/enter-pin';
 import { HomeComponent } from './pages/home/home';
 import { BalanceInquiryComponent } from './pages/balance-inquiry/balance-inquiry';
 import { WithdrawComponent } from './pages/withdraw/withdraw';
+import { DepositComponent } from './pages/deposit/deposit';
 
 export const routes: Routes = [
   {
@@ -25,5 +26,9 @@ export const routes: Routes = [
   {
     path: 'withdraw',
     component: WithdrawComponent
+  },
+  {
+    path: 'deposit',
+    component: DepositComponent
   }
 ];

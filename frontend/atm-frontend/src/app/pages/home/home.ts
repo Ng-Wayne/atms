@@ -70,4 +70,8 @@ export class HomeComponent {
     this.router.navigate(['/withdraw']);
   }
 
+  deposit() {
+    this.router.navigate(['/deposit']);
+  }
+
 }
