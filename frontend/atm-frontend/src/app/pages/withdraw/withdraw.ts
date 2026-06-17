@@ -63,4 +63,8 @@ export class WithdrawComponent {
       }
     });
   }
+
+  back() {
+    this.router.navigate(['/home']);
+  }
 }
