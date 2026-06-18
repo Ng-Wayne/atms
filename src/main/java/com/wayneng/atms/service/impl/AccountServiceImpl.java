@@ -39,6 +39,10 @@ public class AccountServiceImpl implements AccountService {
             throw new RuntimeException("Minimum deposit amount is 10");
         }
 
+        if (amount.compareTo(new BigDecimal("10000")) > 0) {
+            throw new RuntimeException("Maximum deposit amount is 10000");
+        }
+
         Account account = getActiveAccount(accountNumber);
 
         account.setAvailableBalance(
